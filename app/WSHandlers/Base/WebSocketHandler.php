@@ -13,12 +13,18 @@ class WebSocketHandler implements MessageComponentInterface
         $socketId = sprintf('%d.%d', random_int(1, 1000000000), random_int(1, 1000000000));
         $connection->socketId = $socketId;
         $connection->app = App::findById('laravel-websockets');
-        $connection->send("p");
+
     }
 
     public function onMessage($connection, $message)
     {
-
+        // Log::info('Message received: ' . $message);
+        $message = json_decode($message, true);
+        Log::info($message);
+        $messageContent = json_encode(json_decode(($message['Content']), true), JSON_PRETTY_PRINT);
+        // // $messageContent =
+        Log::info($messageContent);
+    
     }
 
     public function onClose($connection)
