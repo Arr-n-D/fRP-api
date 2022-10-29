@@ -2,6 +2,7 @@
 
 namespace App\WSHandlers\Base;
 
+use App\Networking\Packets\Packet;
 use BeyondCode\LaravelWebSockets\Apps\App;
 use Illuminate\Support\Facades\Log;
 use Ratchet\WebSocket\MessageComponentInterface;
@@ -18,12 +19,19 @@ class WebSocketHandler implements MessageComponentInterface
 
     public function onMessage($connection, $message)
     {
-        // Log::info('Message received: ' . $message);
         $message = json_decode($message, true);
-        Log::info($message);
-        $messageContent = json_encode(json_decode(($message['Content']), true), JSON_PRETTY_PRINT);
-        // // $messageContent =
-        Log::info($messageContent);
+        // loop over message and field Packet fields
+        $packet = new Packet();
+        foreach ($message as $key => $value) {
+            $packet->$key = $value;
+        }
+        Log::info(json_encode($packet));
+        // cast message to Packet object
+        // $packet = Packet::
+        // Log::info($message);
+        // $messageContent = json_encode(json_decode(($message['Content']), true), JSON_PRETTY_PRINT);
+        // // // $messageContent =
+        // Log::info($messageContent);
     
     }
 
