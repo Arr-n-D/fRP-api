@@ -8,5 +8,5 @@ use App\Networking\Interfaces\IOutMessage;
 class Packet implements IOutMessage, IInMessage
 {
     public int $ID;
-    public string $Content;
+    public Object $Content;
 }
