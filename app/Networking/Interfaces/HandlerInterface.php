@@ -7,5 +7,5 @@ use App\Networking\Packets\Packet;
 
 interface HandlerInterface
 {
-    public function handle(ConnectionInterface $connection, Packet $message);
+    public function handle(ConnectionInterface $connection, Packet $message, Object $type);
 }

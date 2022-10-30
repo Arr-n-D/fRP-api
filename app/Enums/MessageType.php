@@ -11,6 +11,6 @@ use BenSampo\Enum\Enum;
  */
 final class MessageType extends Enum
 {
-    const GM_SERVER_AUTHENTICATION_IN = 101;
-    const GM_SERVER_AUTHENTICATION_OUT = 102;
+    const GM_SERVER_PLAYER_INIT_SPAWN = 1;
+    // const GM_SERVER_AUTHENTICATION_OUT = 102;
 }

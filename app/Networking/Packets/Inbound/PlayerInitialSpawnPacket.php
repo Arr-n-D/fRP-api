@@ -4,7 +4,7 @@ namespace App\Networking\Packets\Inbound;
 
 use App\Networking\Interfaces\IInMessage;
 
-class AuthenticationPacket implements IInMessage
+class PlayerInitialSpawnPacket implements IInMessage
 {
-    public string $Token;
+    public string $SteamId;
 }

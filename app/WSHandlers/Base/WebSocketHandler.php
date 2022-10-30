@@ -23,27 +23,17 @@ class WebSocketHandler implements MessageComponentInterface
     public function onMessage($connection, $message)
     {
         $message = json_decode($message, true);
-        // loop over message and field Packet fields
-        $packet = new Packet();
-        $dataWithoutID = Arr::except($message, ['ID']);
-        $dataWithoutContent = Arr::except($message, ['Content']);
-        $dataWithoutContent2 = json_decode($dataWithoutID['Content'], true);
+        $packet = new Packet();        
         
-
-        foreach ($dataWithoutContent as $key => $value) {
+        foreach ($message as $key => $value) {
             $packet->$key = $value;
         }
-
+        
         $handler = $this->getMessageHandler($message['ID']);
         $type = $this->getMessageType($message['ID']);
         $type = new $type();
-        foreach ($dataWithoutContent2 as $key => $value) {
-            $type->$key = $value;
-        }
 
-        $packet->Content = $type;       
-
-        $handler->handle($connection, $packet);
+        $handler->handle($connection, $packet, $type);
     
     }
 
