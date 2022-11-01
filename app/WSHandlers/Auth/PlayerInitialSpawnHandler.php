@@ -2,11 +2,14 @@
 
 namespace App\WSHandlers\Auth;
 
+use App\Enums\MessageError;
+use App\Models\Player;
 use App\Networking\Interfaces\HandlerInterface;
 use Ratchet\ConnectionInterface;
 use App\Networking\Packets\Packet;
 use Log;
 use App\WSHandlers\Base\Traits\HandlerTrait;
+use App\Networking\Packets\Inbound\PlayerInitialSpawnPacket;
 
 class PlayerInitialSpawnHandler implements HandlerInterface
 {
@@ -16,19 +19,16 @@ class PlayerInitialSpawnHandler implements HandlerInterface
         /** @var PlayerInitialSpawnPacket $packetContent */
         $packetContent = $this->buildTypeContent($message, $type);
 
-        Log::info(get_class($packetContent));
+        $player = Player::whereSteamId($packetContent->SteamId)->first();
 
-        $connection->send(json_encode([
-            'ID' => 1,
-            'Content' => json_encode([
-                "foobar" => "barfoo"
-            ]),
-            'MessageID' => $message->MessageID,
-            'TimeSinceReceived' => 0
-        ]));
-
-        // $packet->Content = $type;       
-        // print the type of message content
+        if (!$player) {
+            Log::info('PlayerInitialSpawnHandler: Player not found');
+            $connection->send(json_encode([
+                'MessageID' => $message->MessageID, 
+                'Error' => MessageError::GM_SERVER_PLAYER_INIT_SPAWN_ERROR,
+                'Message' => "Player wasn't found",
+            ]));
+        }
 
     }
 }
