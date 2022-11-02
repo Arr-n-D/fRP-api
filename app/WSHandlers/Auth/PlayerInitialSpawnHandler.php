@@ -15,20 +15,21 @@ class PlayerInitialSpawnHandler implements HandlerInterface
 {
     use HandlerTrait;
     public function handle(ConnectionInterface $connection, Packet $message, Object $type)
-    {       
+    {
         /** @var PlayerInitialSpawnPacket $packetContent */
         $packetContent = $this->buildTypeContent($message, $type);
 
         $player = Player::whereSteamId($packetContent->SteamId)->first();
 
         if (!$player) {
-            Log::info('PlayerInitialSpawnHandler: Player not found');
-            $connection->send(json_encode([
-                'MessageID' => $message->MessageID, 
-                'Error' => MessageError::GM_SERVER_PLAYER_INIT_SPAWN_ERROR,
-                'Message' => "Player wasn't found",
-            ]));
-        }
+            $nPacket = new Packet();
+            $nPacket->ID = $message->ID;
+            $nPacket->MessageID = $message->MessageID;
+            $nPacket->Content = json_encode([
+                'error' => MessageError::GM_SERVER_PLAYER_INIT_SPAWN_ERROR
+            ]);
 
+            $connection->send(json_encode($nPacket));
+        }
     }
 }
