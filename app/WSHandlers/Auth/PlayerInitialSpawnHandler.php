@@ -21,15 +21,20 @@ class PlayerInitialSpawnHandler implements HandlerInterface
 
         $player = Player::whereSteamId($packetContent->SteamId)->first();
 
+        $nPacket = new Packet();
+        $nPacket->ID = $message->ID;
+        $nPacket->MessageID = $message->MessageID;
         if (!$player) {
-            $nPacket = new Packet();
-            $nPacket->ID = $message->ID;
-            $nPacket->MessageID = $message->MessageID;
             $nPacket->Content = json_encode([
                 'error' => MessageError::GM_SERVER_PLAYER_INIT_SPAWN_ERROR
             ]);
 
-            $connection->send(json_encode($nPacket));
+        } else {
+            $nPacket->Content = json_encode([
+                'player' => $player
+            ]);
         }
+        
+        $connection->send(json_encode($nPacket));
     }
 }
