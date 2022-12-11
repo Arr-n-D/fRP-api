@@ -2,7 +2,9 @@ name: Create feature branch for issue
 
 on:
   issues:
-    types: [assigned]
+    types:
+      - assigned
+      - opened
 
 jobs:
   create-branch:
