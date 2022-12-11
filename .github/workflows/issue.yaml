@@ -17,4 +17,4 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b feature/${{ github.event.issue.number }}-${{ github.event.issue.title }}
-          git push --set-upstream origin feature/${{ github.event.issue.name }}-${{ github.event.issue.title }}
+          git push --set-upstream origin feature/${{ github.event.issue.number }}-${{ github.event.issue.title }}
